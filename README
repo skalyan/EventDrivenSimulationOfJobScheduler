@@ -1,0 +1,93 @@
+MinoMesos Job Scheduler:
+ 
+Usage:
+-----
+
+	minmesos -c <NumSimulationCycles> -p <SchedulingPolicy> -v <VerbosityLevel>
+
+Compiling:
+---------
+
+	make clean minmesos
+
+Input:
+-----
+
+	Jobs are read from a file named jobStream.txt.
+	Resource offers are read from a file named offerStream.txt.
+
+	Format of the files is one entry per line.
+
+	jobStream.txt:
+	Duration ResourceRequirement
+	----------------------------
+	2 8 
+	3 5
+	9 2
+
+	offerStream.txt:
+	ID Resources
+	------------
+	1 4 
+	3 5
+	2 7
+	3 2
+
+Description:
+-----------
+
+	MinMesos is a simulator that processes a stream of Job requests and Resource Offers.
+	It allocates resources to jobs based on the specified policy.
+
+Results:
+-------
+
+	Prints
+		- Total number of jobs processed.
+		- Number of jobs not placed.
+		- Aggregate time spent by jobs in the queue.
+		- Average wait time.
+
+Implementation:
+--------------
+
+	At the core of the system is a discrete event simulation engine. The simulation
+	engine consists of a time-wheel, which can process a set of events and handle
+	the events.
+
+	Resource Offers and Incoming Jobs are channelled through the event engine.
+	The offer and job arrival can be randomized, but, to make it deterministic for
+	debugging I have commented out the pseudo-random event arrival. In order to
+	enable it, please uncomment the distribution lines in Event.cpp Handler() methods.
+
+	The timewheel processes all events for a given a time-stamp, which may involve
+	other events being queued for current time. Before moving onto the next time-step,
+	we attempt to place all the jobs pending in the queue.
+
+	The compute nodes are tried out with the large available capacity node being
+	picked first.
+
+	Jobs themselves will be picked up based on policy specified at command-line.
+	It can be RawDemand("raw") or TimeWeightedDemand("time") or First-Come-FS("fcfs").
+
+	It is possible to devise more sophisticated policies, involving time-decay
+	of jobs or increasing importance to avoid starvation.
+
+	I propose that the average job queued/wait time could be a simple metric to
+	judge the effectiveness of the scheduler.
+
+Files:
+-----
+
+	SchedTypes.h			: Common Declarations.
+	Node.h					: Host/Compute Node, which holds resource availability.
+	Job.h/cpp				: Job, Keeps Track of Jobs being processed by the system.
+	Event.h/cpp				: Event, Used by the Simulator to keep timestamp and other info.
+	JobScheduler.h/cpp	: Job Scheduler Algorithm.
+	TimeWheel.h/cpp		: Time-Wheel for the Discrete Event Simulator.
+	MiniMesos.cpp			: Simple Driver to Process Args and Invoke Simulator.
+
+	Makefile					: 'make clean minmesos'
+	jobStream.txt			: Sample job stream text file.
+	offerStream.txt		: Sample offer stream text file.
+	SampleOutput.txt		: Output for the samples with three policies.
