@@ -79,15 +79,19 @@ Implementation:
 Files:
 -----
 
-	SchedTypes.h			: Common Declarations.
-	Node.h					: Host/Compute Node, which holds resource availability.
-	Job.h/cpp				: Job, Keeps Track of Jobs being processed by the system.
-	Event.h/cpp				: Event, Used by the Simulator to keep timestamp and other info.
-	JobScheduler.h/cpp	: Job Scheduler Algorithm.
-	TimeWheel.h/cpp		: Time-Wheel for the Discrete Event Simulator.
-	MiniMesos.cpp			: Simple Driver to Process Args and Invoke Simulator.
+Source Files:
+------------
+SchedTypes.h			: Common Declarations.
+Node.h					: Host/Compute Node, which holds resource availability.
+Job.h/cpp				: Job, Keeps Track of Jobs being processed by the system.
+Event.h/cpp				: Event, Used by the Simulator to keep timestamp and other info.
+JobScheduler.h/cpp	: Job Scheduler Algorithm.
+TimeWheel.h/cpp		: Time-Wheel for the Discrete Event Simulator.
+MiniMesos.cpp			: Simple Driver to Process Args and Invoke Simulator.
 
-	Makefile					: 'make clean minmesos'
-	jobStream.txt			: Sample job stream text file.
-	offerStream.txt		: Sample offer stream text file.
-	SampleOutput.txt		: Output for the samples with three policies.
+Support Files:
+-------------
+Makefile					: 'make clean minmesos'
+jobStream.txt			: Sample job stream text file.
+offerStream.txt		: Sample offer stream text file.
+SampleOutput.txt		: Output for the samples with three policies.
